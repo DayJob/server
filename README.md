@@ -1,4 +1,4 @@
-GoodtoGo
+DayJob Server
 ==========
 
-MEAN stack webapp
+is converting from php to node.js
