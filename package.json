@@ -1,0 +1,39 @@
+{
+  "name": "dayjob",
+  "version": "1.0.0",
+  "description": "dayjob\r ==========",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CharmSae/goodtogo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CharmSae/dayjob/issues"
+  },
+  "homepage": "https://github.com/CharmSae/dayjob#readme",
+  "dependencies": {
+    "async": "^1.5.2",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.14.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.1",
+    "ejs": "^2.3.4",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "mongoose": "^4.3.6",
+    "mongoose-paginate": "^5.0.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.0.0",
+    "passport-google-oauth": "^0.2.0",
+    "passport-local": "^1.0.0",
+    "pg": "^6.0.3",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.23.6",
+    "sequelize-definer": "^0.4.6"
+  }
+}

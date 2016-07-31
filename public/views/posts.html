@@ -1,0 +1,122 @@
+ <div class="row">
+        <div class="col-md-12">
+
+          <div class="jumbotron">
+            <h1>Node & Angular</h1>
+            <p>빠르고 안정적입니다.</p>
+            <p>
+              
+              
+            </p>
+          </div>
+          
+          <div class="alert alert-info" role="alert">
+            <p>Node.js와 Angular.js 이용해 페이지 새로고침없이 데이터를 불러오는 데모입니다.</p>
+            <p>서버쪽이 처리할 것과 클라이언트에서 처리할 코드를 완전히 분리하였습니다.</p>
+          </div>
+          
+        </div>
+      </div>
+
+    <br />
+
+    <div class="row">
+      <div class="col-md-6">
+        
+          <ul class="list-group">
+            <li class="list-group-item" ng-repeat="post in posts | orderBy: '-_id'"><h4>{{post.title}} : {{post.body}}</h4> by {{post.creator.nickname}}
+              <span><a href="" ng-click="destory(post)" class="label label-danger pull-right" ng-if="currentInfo._id==post.creator._id"><span class="glyphicon glyphicon-trash"></span> 삭제하기</a></span>
+            </li>
+          </ul>
+          
+          <p class="text-center" ng-if="showMoreLoading"><span class="fa fa-spinner fa-4x fa-spin"></span></p>
+          <div ng-if="!loading">
+            <button ng-if="remainingPosts" class="btn btn-success form-control" type="button" ng-click="showMore()"> 더 보기 <span class="badge">{{remainingPosts}}</span></button>
+          </div>
+<br />
+        <div ng-if="logginIn">
+          <form name="postForm" novalidate>
+            <div class="form-group">
+              <input type="text" name="title" class="form-control" placeholder="제목" cols="80" ng-model="postData.title" required>
+            </div>
+            <div class="form-group">
+              <textarea type="text" name="body" class="form-control" placeholder="내용" cols="80" rows="5" ng-model="postData.body" required></textarea>
+            </div>
+            
+              <p class="text-center" ng-if="loading"><span class="fa fa-spinner fa-4x fa-spin"></span></p>
+              
+              <button type="button" class="btn btn-primary pull-right" ng-click="post()" ng-disabled="postForm.$invalid" ng-if="!loading">작성</button>
+          </form>
+        </div>
+        
+      </div>
+      
+      <div class="col-md-6">
+        
+        <div ng-if="logginIn">
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Nickname : {{currentInfo.nickname}}</div>
+            <div class="panel-body">
+              Email : {{currentInfo.email}}
+            </div>
+          </div>
+          
+        </div>
+        
+        <!--<div ng-if="!logginIn">-->
+        <!--  <p class="text-center" ng-if="userLoading"><span class="fa fa-cog fa-4x fa-spin"></span></p>-->
+        <!--  <ul class="list-group">-->
+        <!--    <li class="list-group-item" ng-repeat="user in users">{{user.email}} : {{user.nickname}}-->
+        <!--      <span><a href="#" ng-click="destoryUser(user._id)" class="label label-danger pull-right"><span class="glyphicon glyphicon-trash"></span> 삭제하기</a></span>-->
+        <!--    </li>-->
+        <!--  </ul>-->
+        <!--</div>-->
+        
+          <div class="alert alert-info" role="alert">
+            <p>제목과 내용을 동시에 검색합니다.</p>
+            <p>검색결과는 페이지로딩 없이 바로 아래쪽 박스에 나오게 됩니다.</p>
+          </div>
+        
+        <form name="searchForm" ng-submit="search(searchKeyword)" novalidate>
+          <div class="input-group input-group-lg">
+            <input type="text" class="form-control" placeholder="검색어를 입력하세요." ng-model="searchKeyword" required />
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-primary">검색!</button>
+            </span>
+          </div>
+        </form>
+        
+        <div class="well">
+          <p class="text-center" ng-if="searchLoading"><span class="fa fa-spinner fa-4x fa-spin"></span></p>
+          <p ng-repeat="post in result" ng-if="!searchLoading">
+              {{post.title}} : {{post.body}}  by {{post.creator.nickname}}
+          </p>
+        </div>
+        
+      </div>
+    </div>
+
+    <br />
+
+      <div class="row">
+        <div class="col-md-6">
+        
+        </div>
+
+        <div class="col-md-6">
+
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+
+        </div>
+
+        <div class="col-md-6">
+          
+
+        </div>
+      </div>
