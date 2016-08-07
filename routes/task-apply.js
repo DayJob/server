@@ -22,39 +22,44 @@ module.exports = function () {
         TaskApply.createTaskApply(req.body, function (status, data) {
             User.findDataById(data.task.userId, function (status, data) {
                 if (status == 200) {
-                    request.post({
-                        headers: {
-                            'Authorization': 'key=' + process.env.FCM_SERVER_KEY,
-                            'Content-Type': 'application/json'
-                        },
-                        json: {
-                            "notification": {
-                                "title": "DayJob",
-                                "body": "지원자가 있습니다!",
-                                "sound": "default",
-                                "click_action": "OPEN_ACTIVITY_1"
-                            },
-                            "data": {
-                                "score": "4x8",
-                                "time": "15:16.2342"
-                            },
-                            "to": data.fcmToken
 
-                        },
-                        url: 'https://fcm.googleapis.com/fcm/send'
-                    }, function (error, response, body) {
-                        if (!error && response.statusCode == 200) {
-                            if (body.success == 1) {
-                                res.resJson(res, status, data);
-                            }
-                        } else {
-                            if (!error) {
-                                console.log(error);
-                            }
-                            res.resJson(res, 500);
-                        }
+                    if (data.fcmToken) {
+                        request.post({
+                            headers: {
+                                'Authorization': 'key=' + process.env.FCM_SERVER_KEY,
+                                'Content-Type': 'application/json'
+                            },
+                            json: {
+                                "notification": {
+                                    "title": "DayJob",
+                                    "body": "지원자가 있습니다!",
+                                    "sound": "default",
+                                    "click_action": "OPEN_ACTIVITY_1"
+                                },
+                                "data": {
+                                    "score": "4x8",
+                                    "time": "15:16.2342"
+                                },
+                                "to": data.fcmToken
 
-                    });
+                            },
+                            url: 'https://fcm.googleapis.com/fcm/send'
+                        }, function (error, response, body) {
+                            if (!error && response.statusCode == 200) {
+                                if (body.success == 1) {
+                                    res.resJson(res, status, data);
+                                }
+                            } else {
+                                if (!error) {
+                                    console.log(error);
+                                }
+                                res.resJson(res, 500);
+                            }
+
+                        });
+                    } else {
+                        res.resJson(res, status, data);
+                    }
                 } else {
                     res.resJson(res, 404);
                 }
