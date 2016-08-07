@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CharmSae/goodtogo.git"
+    "url": "git+https://github.com/DayJob/server.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/CharmSae/dayjob/issues"
+    "url": "https://github.com/DayJob/server/issues"
   },
-  "homepage": "https://github.com/CharmSae/dayjob#readme",
+  "homepage": "https://github.com/DayJob/server#readme",
   "dependencies": {
     "async": "^1.5.2",
     "bcrypt-nodejs": "0.0.3",
@@ -25,6 +25,7 @@
     "ejs": "^2.3.4",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "firebase": "^3.2.1",
     "mongoose": "^4.3.6",
     "mongoose-paginate": "^5.0.0",
     "passport": "^0.3.2",
@@ -33,6 +34,7 @@
     "passport-local": "^1.0.0",
     "pg": "^6.0.3",
     "pg-hstore": "^2.3.2",
+    "request": "^2.74.0",
     "sequelize": "^3.23.6",
     "sequelize-definer": "^0.4.6"
   }
