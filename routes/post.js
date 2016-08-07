@@ -4,7 +4,7 @@ var User = require('../models/user');
 var router = express.Router();
 var apiPath = '/post/';
 
-var respond = require('./respond');
+var respond = require('./../utils/responder');
 
 module.exports = function () {
 

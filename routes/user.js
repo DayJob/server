@@ -6,8 +6,6 @@ var apiPath = '/users/';
 var models = require('../models/sequelize');
 var User = models.User;
 
-var respond = require('./respond');
-
 // module.exports = function () {
 //
 // //user routing
@@ -49,32 +47,46 @@ var respond = require('./respond');
 module.exports = function () {
     router.post(apiPath, function (req, res) {
         User.createData(req.body, function (status, data) {
-            respond(res, status, data);
+            res.resJson(res, status, data);
         });
     });
 
     router.get(apiPath + ':id', function (req, res) {
         User.findDataById(req.params.id, function (status, data) {
-            respond(res, status, data);
+            res.resJson(res, status, data);
         });
     });
 
     router.get(apiPath, function (req, res) {
         User.findData(req.query, function (status, data) {
-            respond(res, status, data);
+            res.resJson(res, status, data);
         });
 
     });
 
-    router.put(apiPath + ':id', function (req, res) {
+    router.put(apiPath + ':id', function (req, res, next) {
+        if (req.user) {
+            next();
+        } else {
+            res.resJson(res, 401);
+        }
+
+    }, function (req, res) {
         User.updateDataById(req.params.id, req.body, function (status, data) {
-            respond(res, status, data);
+            res.resJson(res, status, data);
         });
     });
 
-    router.delete(apiPath + ':id', function (req, res) {
+    router.delete(apiPath + ':id', function (req, res, next) {
+        if (req.user) {
+            next();
+        } else {
+            res.resJson(res, 401);
+        }
+
+    }, function (req, res) {
         User.deleteDataById(req.params.id, function (status, data) {
-            respond(res, status, data);
+            res.resJson(res, status, data);
         });
     });
 

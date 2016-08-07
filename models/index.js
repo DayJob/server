@@ -1,5 +1,5 @@
 var Task = require('./task');
-var TaskApply = require('./taskApply');
+var TaskApply = require('./task-apply');
 
 module.exports = {
     Task: Task,

@@ -1,40 +1,45 @@
 var LocalStrategy = require('passport-local').Strategy;
-var User = require('../models/user');
+var models = require('../models/sequelize');
+var User = models.User;
 var bCrypt = require('bcrypt-nodejs');
 
-module.exports = function(passport){
-	passport.use('login', new LocalStrategy({
-						usernameField: 'email',
-						passReqToCallback : true
+module.exports = function (passport) {
+    passport.use('login', new LocalStrategy({
+            usernameField: 'email',
+            passReqToCallback: true
         },
-        function(req, email, password, done) {
-            // check in mongo if a user with username exists or not
-            User.findOne({ 'email' :  email },
-                function(err, user) {
-                    // In case of any error, return using the done method
-                    if (err)
-                        return done(err);
-                    // Username does not exist, log the error and redirect back
-                    if (!user){
-                        console.log('User Not Found with email '+email);
-                        return done(null, false, {message: '해당 이메일을 찾을 수 없습니다.'});
-                    }
-                    // User exists but wrong password, log the error
-                    if (!isValidPassword(user, password)){
+        function (req, email, password, done) {
+
+            return User.findOne({
+                where: {
+                    email: email
+                }
+            }).then(function (user) {
+
+                if (user) {
+                    if (isValidPassword(user, password)) {
+                        delete user.password;
+                        return done(null, user);
+                    } else {
                         console.log('Invalid Password');
                         return done(null, false, {message: '비밀번호을 다시 확인해주세요.'}); // redirect back to login page
                     }
-                    // User and password both match, return user from done method
-                    // which will be treated like success
-                    return done(null, user);
+                } else {
+                    console.log('User Not Found with email ' + email);
+                    return done(null, false, {message: '해당 이메일을 찾을 수 없습니다.'});
                 }
-            );
+
+            }).catch(function (err) {
+                console.log('Error in Login: ' + err);
+                return done(err);
+            }).done(function (data) {
+                return data;
+            });
 
         })
     );
 
-
-    var isValidPassword = function(user, password){
+    var isValidPassword = function (user, password) {
         return bCrypt.compareSync(password, user.password);
     };
 

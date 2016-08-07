@@ -1,7 +1,15 @@
 var Sequelize = require('sequelize');
 var sequelize = require('../../config/sequelize');
 
-var mixin = require('./mixin')(sequelize);
+var include = function () {
+    return [{
+        'model': sequelize.models.User,
+        'as': 'creator',
+        'attributes': ['id', 'name', 'email', 'address', 'phone', 'gender', 'birth']
+    }];
+};
+
+var mixin = require('./mixin')(sequelize, include);
 
 module.exports = {
     fields: {
@@ -30,11 +38,11 @@ module.exports = {
             'allowNull': false
         },
         'latitude': {
-            'type': Sequelize.STRING,
+            'type': Sequelize.DOUBLE,
             'allowNull': false
         },
         'longitude': {
-            'type': Sequelize.STRING,
+            'type': Sequelize.DOUBLE,
             'allowNull': false
         },
         'image_name': {
@@ -54,29 +62,32 @@ module.exports = {
         'hooks': {},
         'instanceMethods': Sequelize.Utils._.extend(mixin.options.instanceMethods, {}),
         'classMethods': Sequelize.Utils._.extend(mixin.options.classMethods, {
-            getInclude: function () {
-                return [{
-                    'model': sequelize.models.User,
-                    'as': 'creator',
-                    'attributes': ['id', 'name', 'email', 'address', 'phone', 'gender', 'birth']
-                }];
-            },
-            findTasks: function (query, callback) {
+            findTasks: function (options, callback) {
                 var where = {};
 
-                if (query.userId) {
-                    where.userId = query.userId
+                if (options.userId) {
+                    where.userId = options.userId
                 }
 
-                if (query.pay) {
-                    where.pay = query.pay
+                if (options.pay) {
+                    where.pay = options.pay
                 }
 
-                var options = {
-                    where: where
+                if (options.category) {
+                    where.category = options.category
+                }
+
+                var query = {
+                    where: where,
+                    order: [[options.orderBy, options.sort]],
+                    offset: parseInt(options.offset)
                 };
-                
-                sequelize.models.Task.findData(options, function (status, data) {
+
+                if (options.limit) {
+                    query.limit = parseInt(options.limit)
+                }
+
+                sequelize.models.Task.findData(query, function (status, data) {
                     callback(status, data);
                 });
             }

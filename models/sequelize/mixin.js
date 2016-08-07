@@ -1,13 +1,13 @@
 var errorHandler = require('../../utils/error-handler');
 
-module.exports = function (sequelize) {
+module.exports = function (sequelize, include) {
     return {
         'options': {
             'instanceMethods': {},
             'classMethods': {
                 createData: function (body, callback) {
                     this.create(body, {
-                        include: this.getInclude()
+                        include: include()
                     }).then(function (data) {
                         return data;
                     }).catch(errorHandler.catchCallback(callback)).done(function (data) {
@@ -20,7 +20,7 @@ module.exports = function (sequelize) {
                 },
                 findDataById: function (id, callback) {
                     this.findById(id, {
-                        include: this.getInclude()
+                        include: include()
                     }).then(function (data) {
                         if (data) {
                             return data;
@@ -34,16 +34,16 @@ module.exports = function (sequelize) {
                     });
                 },
                 findData: function (query, callback) {
-                    query.include = this.getInclude();
-                    this.findAll(query).then(function (data) {
-                        return data;
+                    query.include = include();
+                    this.findAndCount(query).then(function (data) {
+                        if (data.rows.length > 0) {
+                            return data;
+                        } else {
+                            throw errorHandler.customError(404);
+                        }
                     }).catch(errorHandler.catchCallback(callback)).done(function (data) {
                         if (data) {
-                            if (data.length == 0) {
-                                callback(404, data);
-                            } else {
-                                callback(200, data);
-                            }
+                            callback(200, data);
                         }
                     });
                 },
@@ -52,7 +52,7 @@ module.exports = function (sequelize) {
 
                     sequelize.transaction(function (t) {
                         return _this.findById(id, {
-                            include: _this.getInclude(),
+                            include: include(),
                             transaction: t
                         }).then(function (data) {
                             if (data) {
@@ -83,7 +83,7 @@ module.exports = function (sequelize) {
 
                     sequelize.transaction(function (t) {
                         return _this.findById(id, {
-                            include: _this.getInclude(),
+                            include: include(),
                             transaction: t
                         }).then(function (data) {
                             if (data) {

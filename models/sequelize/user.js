@@ -1,7 +1,14 @@
 var Sequelize = require('sequelize');
 var sequelize = require('../../config/sequelize');
 
-var mixin = require('./mixin')(sequelize);
+var include = function () {
+    return [{
+        'model': sequelize.models.Task,
+        'as': 'tasks'
+    }];
+};
+
+var mixin = require('./mixin')(sequelize, include);
 
 module.exports = {
     fields: {
@@ -32,19 +39,16 @@ module.exports = {
         'birth': {
             'type': Sequelize.STRING,
             'allowNull': true
+        },
+        'fcmToken': {
+            'type': Sequelize.STRING,
+            'allowNull': true
         }
     },
     options: {
         'charset': 'utf8',
         'hooks': {},
         'instanceMethods': Sequelize.Utils._.extend(mixin.options.instanceMethods, {}),
-        'classMethods': Sequelize.Utils._.extend(mixin.options.classMethods, {
-            getInclude: function () {
-                return [{
-                    'model': sequelize.models.Task,
-                    'as': 'tasks'
-                }];
-            }
-        })
+        'classMethods': Sequelize.Utils._.extend(mixin.options.classMethods, {})
     }
 };

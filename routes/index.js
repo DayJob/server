@@ -7,7 +7,7 @@ module.exports = function (passport) {
     var user = require('./user')();
     var post = require('./post')();
     var task = require('./task')();
-    var taskApply = require('./taskApply')();
+    var taskApply = require('./task-apply')();
 
     router.use('/api/', auth, user, post, task, taskApply);
 

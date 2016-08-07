@@ -2,21 +2,23 @@ var login = require('./login');
 var signup = require('./signup');
 var facebook = require('./facebook');
 var google = require('./google');
-var User = require('../models/user');
+var models = require('../models/sequelize');
+var User = models.User;
 
-module.exports = function(passport){
+module.exports = function (passport) {
 
-	// Passport needs to be able to serialize and deserialize users to support persistent login sessions
-    passport.serializeUser(function(user, done) {
-        console.log('serializing user: ',user);
+    // Passport needs to be able to serialize and deserialize users to support persistent login sessions
+    passport.serializeUser(function (user, done) {
+        console.log('serializing user: ', user);
         done(null, user);
     });
 
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
+    passport.deserializeUser(function (user, done) {
+        User.findDataById(user.id, function (status, user) {
             console.log('deserializing user');
-            done(err, user);
+            done(null, user);
         });
+
     });
 
     // Setting up Passport Strategies for Login and SignUp/Registration

@@ -7,8 +7,8 @@ module.exports = {
         return {
             status: status,
             body: {
-                code: code || status,
-                detail: _this.errorTranslator(code || status)
+                status: code || status,
+                message: _this.errorTranslator(code || status)
             }
         };
     },
