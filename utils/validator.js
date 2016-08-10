@@ -22,8 +22,9 @@ var execute = function (req, res, next) {
     } else {
         checkCredentials(req.body);
     }
-    console.log('errorList', errorList);
+
     if (errorList.length > 0) {
+        console.log('errorList', errorList);
         res.resJson(res, 400, {
             status: '400_14',
             data: errorList

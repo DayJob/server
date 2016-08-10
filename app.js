@@ -37,8 +37,8 @@ app.use(flash());
 app.use(cookieSession({
     secret: process.env.SECRET,
     cookie: {maxAge: 1000 * 60 * 60}
-
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
