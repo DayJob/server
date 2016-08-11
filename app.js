@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
-var cookieSession = require('cookie-session');
+var session = require('express-session');
 var flash = require('connect-flash');
 var async = require('async');
 var firebase = require('firebase');
@@ -34,8 +34,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(flash());
 
-app.use(cookieSession({
+app.use(session({
     secret: process.env.SECRET,
+    saveUninitialized: true,
+    resave: true,
     cookie: {maxAge: 1000 * 60 * 60}
 }));
 
