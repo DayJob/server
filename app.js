@@ -8,6 +8,7 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var async = require('async');
 var firebase = require('firebase');
+var MongoStore = require('connect-mongo')(session);
 
 var validator = require('./utils/validator');
 var responder = require('./utils/responder');
@@ -38,7 +39,10 @@ app.use(session({
     secret: process.env.SECRET,
     saveUninitialized: true,
     resave: true,
-    cookie: {maxAge: 1000 * 60 * 60}
+    cookie: {maxAge: 1000 * 60 * 60},
+    store: new MongoStore({
+        url: process.env.MONGO_DB
+    })
 }));
 
 app.use(passport.initialize());

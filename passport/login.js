@@ -18,7 +18,10 @@ module.exports = function (passport) {
 
                 if (user) {
                     if (isValidPassword(user, password)) {
-                        delete user.password;
+                        delete user.dataValues.password;
+                        delete user.dataValues.fcmToken;
+                        delete user.dataValues.createdAt;
+                        delete user.dataValues.updatedAt;
                         return done(null, user);
                     } else {
                         console.log('Invalid Password');

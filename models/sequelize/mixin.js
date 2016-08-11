@@ -1,6 +1,6 @@
 var errorHandler = require('../../utils/error-handler');
 
-module.exports = function (sequelize, include) {
+module.exports = function (sequelize, include, attributes) {
     return {
         'options': {
             'instanceMethods': {},
@@ -19,9 +19,15 @@ module.exports = function (sequelize, include) {
                     });
                 },
                 findDataById: function (id, callback) {
-                    this.findById(id, {
+                    var query = {
                         include: include()
-                    }).then(function (data) {
+                    };
+
+                    if (attributes) {
+                        query.attributes = attributes();
+                    }
+
+                    this.findById(id, query).then(function (data) {
                         if (data) {
                             return data;
                         } else {
@@ -35,6 +41,9 @@ module.exports = function (sequelize, include) {
                 },
                 findData: function (query, callback) {
                     query.include = include();
+                    if (attributes) {
+                        query.attributes = attributes();
+                    }
                     this.findAndCount(query).then(function (data) {
                         if (data.rows.length > 0) {
                             return data;

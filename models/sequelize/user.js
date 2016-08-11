@@ -8,7 +8,11 @@ var include = function () {
     }];
 };
 
-var mixin = require('./mixin')(sequelize, include);
+var attributes = function () {
+    return ['id', 'name', 'address', 'phone', 'gender', 'birth'];
+};
+
+var mixin = require('./mixin')(sequelize, include, attributes);
 
 module.exports = {
     fields: {
