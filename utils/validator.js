@@ -8,6 +8,7 @@ var check = function (key) {
 var checkCredentials = function (body) {
 
     for (var i = 0; i < keys.length; i++) {
+        body[keys[i]] = body[keys[i]].trim();
         if (body[keys[i]] == "" || body[keys[i]] == null) {
             errorList.push(keys[i]);
         }
